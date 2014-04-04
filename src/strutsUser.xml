@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<struts>
+	
+
+	<package name="user" extends="aShop-Default" namespace="/user">
+		<action name="register" class="action.user.RegisterAction">
+			<interceptor-ref name="removeUserStack"/>
+			<result name="verify">/user/verify_form.jsp</result>
+		</action>
+		<action name="validate" class="action.user.VerifyAction">
+			<result type="json" >
+				<param name="root">ok</param>
+			</result>	
+		</action>
+		<action name="image" class="action.user.ImageAction" method="execute">
+		
+			<result name="success" type="stream"  >
+				<param name="inputName">imageStream</param>
+				<param name="contentType">image/jpeg</param>
+			</result>	
+			
+		</action>
+		
+		<action name="checkEmail" class="action.user.CheckEmailAction" method="execute">
+			<result type="json" >
+				<param name="root">ok</param>
+			</result>	
+		</action>
+		<action name="emailVerify" class="action.user.EmailVerifyAction" method="execute">
+			<result name="success" >/user/register_ok.jsp</result>
+			<result name="fail" >/user/verify_form.jsp</result>
+		</action>
+
+		<action name="login" class="action.user.LoginAction" method="execute">
+			<interceptor-ref name="removeUserStack"/>
+			<result name="success" >/main/main.jsp</result>
+			<result name="verify" >/user/verify_form.jsp</result>
+			<result name="fail"  >/user/login_form.jsp</result>
+		</action>
+		
+		<action name="logout" class="action.user.LogoutAction" method="execute">
+		<interceptor-ref name="clearSessionStack"/>
+			<result name="success"  >/user/login_form.jsp</result>
+		</action>
+	</package>
+
+
+</struts>

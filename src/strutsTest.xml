@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<struts>
+	
+
+	<package name="test" extends="aShop-Default" namespace="/test">
+		<action name="validate" class="test.VerifyAction">
+			<result type="json" >
+				<param name="root">hint</param>
+			</result>	
+		</action>
+		
+	
+
+
+	</package>
+
+
+</struts>

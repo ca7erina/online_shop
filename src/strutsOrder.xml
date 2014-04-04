@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<struts>
+	
+
+	<package name="order" extends="aShop-Default" namespace="/order">
+		<action name="orderView" class="action.order.OrderViewAction">
+				<result>/order/order_info.jsp</result>	
+		</action>
+		<action name="addressView" class="action.order.AddressViewAction">
+			<interceptor-ref name="checkloginStack"/>
+				
+				<result name="success">/order/address_form.jsp</result>		
+		</action>
+		
+		<action name="saveOrder" class="action.order.SaveOrderAction">
+		<interceptor-ref name="RemoveCartInBothStack"/>
+		<interceptor-ref name="checkloginStack"/>
+				<result name="fail" type="redirect">/user/login_form.jsp</result>
+				<result name="success" >/order/order_ok.jsp</result>	
+		
+		</action>
+
+	</package>
+
+</struts>

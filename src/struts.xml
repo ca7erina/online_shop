@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<struts>
+	
+	<include file="strutsCart.xml"/>
+	<include file="strutsMain.xml"/>
+	<include file="strutsUser.xml"/>
+	<include file="strutsOrder.xml"/>
+	<include file="strutsTest.xml"/>
+	<package name="aShop-Default" extends="json-default">
+		<interceptors>
+		<interceptor name="checklogin" class="action.interceptor.CheckLoginInterceptor"/>
+		<interceptor name="removeUserInSession" class="action.interceptor.RemoveLoginedUserInterceptor"/>
+		<interceptor name="removeCartInSession" class="action.interceptor.RemoveCartInterceptor"/>
+		<interceptor name="clearSession" class="action.interceptor.ClearSessionInterceptor"/>
+		<interceptor name="saveCart" class="action.interceptor.StoreCartInCookie"/>
+		<interceptor name="loadCart" class="action.interceptor.LoadCartFromCookie"/>
+		<interceptor name="removeCart" class="action.interceptor.RemoveCartInCookie"/>
+		<interceptor name="trasaction" class="action.interceptor.TransactionInterceptor"/>
+			<interceptor-stack name="ashopStack">
+				<interceptor-ref name="defaultStack"/>
+				<interceptor-ref name="trasaction"/>
+			</interceptor-stack>
+			<interceptor-stack name="cartRemoveStack">
+				<interceptor-ref name="ashopStack"/>
+				<interceptor-ref name="cookie"/>
+				<interceptor-ref name="removeCart"/>
+			</interceptor-stack>
+			<interceptor-stack name="cartLoadStack">
+				<interceptor-ref name="ashopStack"/>
+				<interceptor-ref name="cookie"/>
+				<interceptor-ref name="loadCart"/>
+			</interceptor-stack>
+			<interceptor-stack name="cartSaveStack">
+				<interceptor-ref name="ashopStack"/>
+				<interceptor-ref name="cookie"/>
+				<interceptor-ref name="saveCart"/>
+			</interceptor-stack>
+			<interceptor-stack name="checkloginStack">
+				<interceptor-ref name="ashopStack"/>
+				<interceptor-ref name="checklogin"/>
+			</interceptor-stack>
+			<interceptor-stack name="removeUserStack">
+				<interceptor-ref name="ashopStack"/>
+				<interceptor-ref name="removeUserInSession"/>
+			</interceptor-stack>
+			<interceptor-stack name="removeCartStack">
+				<interceptor-ref name="ashopStack"/>
+				<interceptor-ref name="removeCartInSession"/>
+			</interceptor-stack>
+			<interceptor-stack name="clearSessionStack">
+				<interceptor-ref name="ashopStack"/>
+				<interceptor-ref name="clearSession"/>
+			</interceptor-stack>
+			<interceptor-stack name="RemoveCartInBothStack">
+				<interceptor-ref name="ashopStack"/>	
+				<interceptor-ref name="removeCartInSession"/>
+				<interceptor-ref name="cookie"/>
+				<interceptor-ref name="removeCart"/>
+				
+			</interceptor-stack>
+		</interceptors>
+		
+		  	<!-- 所有Action请求使用ashopStack拦截器 -->
+			<default-interceptor-ref name="ashopStack"/>
+		
+		<!-- 定义共通的拦截器,Result和Action组件 -->
+		<global-results>
+			<result name="fail">/error.jsp</result>
+			<result name="login">/user/login_form.jsp</result>
+			<result name="index" type="redirectAction">main/index</result>
+		</global-results>
+		
+		<global-exception-mappings>
+			<exception-mapping exception="java.lang.Exception" result="error"/>
+		</global-exception-mappings>
+	</package>
+</struts>
